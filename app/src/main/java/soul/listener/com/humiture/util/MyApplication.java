@@ -8,12 +8,11 @@ import com.orhanobut.logger.Logger;
 import com.squareup.leakcanary.LeakCanary;
 import com.zhy.autolayout.config.AutoLayoutConifg;
 
-
 /**
- * @author haidragon create at 2017-7-17
  * @description 获取整个应用的上下文
  */
-public class MyApplication extends Application /*implements UncaughtExceptionHandler*/ {
+
+public class MyApplication extends Application {
 
     private static final String TAG = "MyApplication";
     private static Context mContext;
@@ -36,7 +35,9 @@ public class MyApplication extends Application /*implements UncaughtExceptionHan
 
     }
 
-    /**检测内存溢出*/
+    /**
+     * 检测内存溢出
+     */
     private void initLeakCanary() {
         if (LeakCanary.isInAnalyzerProcess(this)) {
             // This process is dedicated to LeakCanary for heap analysis.
@@ -46,7 +47,9 @@ public class MyApplication extends Application /*implements UncaughtExceptionHan
         LeakCanary.install(this);
     }
 
-    /**初始化日志管理*/
+    /**
+     * 初始化日志管理
+     */
     private void initLogger() {
         if (Constants.DEBUG) {
             Logger.init().methodCount(0).hideThreadInfo().logLevel(LogLevel.FULL);
