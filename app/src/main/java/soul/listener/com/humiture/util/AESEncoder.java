@@ -7,7 +7,6 @@ import javax.crypto.spec.SecretKeySpec;
 
 /**
  * @description aes加密工具
- * @author haidragon create at 2017-7-17
  */
 public class AESEncoder {
 

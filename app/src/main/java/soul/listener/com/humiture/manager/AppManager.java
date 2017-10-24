@@ -9,8 +9,6 @@ import java.util.Stack;
 import soul.listener.com.humiture.util.ToastUtil;
 
 /**
- * Created by haidragon on 2017/7/31.
- *
  * @description 应用程序Activity管理类：用于Activity管理和应用程序退出
  */
 public class AppManager {
