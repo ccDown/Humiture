@@ -8,6 +8,7 @@ import soul.listener.com.humiture.util.Constants;
 /**
  * @description SharePreference缓存
  * Created by kuan on 2017/10/24.
+ * @author kuan
  */
 
 public class ShareDB {

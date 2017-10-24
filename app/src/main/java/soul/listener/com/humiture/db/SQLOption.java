@@ -4,7 +4,8 @@ import soul.listener.com.humiture.manager.DBManager;
 
 /**
  * @description 数据库操作类
- * Created by kuan on 2017/10/24.
+ * @author kuan
+ * Created 2017/10/24.
  */
 
 public class SQLOption {

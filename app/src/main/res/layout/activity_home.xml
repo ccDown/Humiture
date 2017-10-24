@@ -4,4 +4,31 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
+    <Button
+        android:text="log_v"
+        android:id="@+id/log_v"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <Button
+        android:text="log_d"
+        android:id="@+id/log_d"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+    <Button
+        android:text="log_i"
+        android:id="@+id/log_i"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+    <Button
+        android:text="log_w"
+        android:id="@+id/log_w"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+    <Button
+        android:text="log_e"
+        android:id="@+id/log_e"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
 </LinearLayout>

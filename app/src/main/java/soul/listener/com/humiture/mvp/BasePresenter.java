@@ -1,7 +1,5 @@
 package soul.listener.com.humiture.mvp;
 /**
- * Created by haidragon on 2017/7/31.
- *
  * @description Presenter基类
  */
 
