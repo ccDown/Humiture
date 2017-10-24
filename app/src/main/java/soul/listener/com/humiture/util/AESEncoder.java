@@ -4,6 +4,9 @@ import javax.crypto.Cipher;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 
+import soul.listener.com.humiture.util.base64.BASE64Decoder;
+import soul.listener.com.humiture.util.base64.BASE64Encoder;
+
 
 /**
  * @description aes加密工具
