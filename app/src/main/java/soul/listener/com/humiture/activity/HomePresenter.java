@@ -2,6 +2,9 @@ package soul.listener.com.humiture.activity;
 
 import com.orhanobut.logger.Logger;
 
+import java.sql.SQLException;
+
+import soul.listener.com.humiture.db.SQLOption;
 import soul.listener.com.humiture.mvp.BasePresenter;
 
 
@@ -15,6 +18,11 @@ class HomePresenter extends BasePresenter<HomeActivity> {
 
     public void toLogV() {
         Logger.v("VVVV","asdasd","asdasd");
+        try {
+            SQLOption.getConnection();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     public void toLogD() {
