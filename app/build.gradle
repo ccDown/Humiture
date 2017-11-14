@@ -25,16 +25,16 @@ android {
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile fileTree(include: ['*.jar'], dir: 'libs')
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
     compile 'com.android.support:appcompat-v7:26.+'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
     testCompile 'junit:junit:4.12'
-
     //日志打印
     compile 'com.orhanobut:logger:1.15'
+    //手机适配
     compile 'com.zhy:autolayout:1.4.5'
     //注解
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.7.0'
@@ -47,4 +47,5 @@ dependencies {
     //内存检测
     debugCompile 'com.squareup.leakcanary:leakcanary-android:1.5.1'
     releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.1'
+    compile files('libs/mysql-connector-java-5.1.41-bin.jar')
 }

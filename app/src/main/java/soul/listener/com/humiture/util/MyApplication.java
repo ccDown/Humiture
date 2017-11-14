@@ -21,17 +21,20 @@ public class MyApplication extends Application {
     public void onCreate() {
         super.onCreate();
         mContext = this;
-        LOG.logI("--------------onCreate()");
-        /**检测内存溢出*/
-        initLeakCanary();
-        /**初始化日志管理*/
-        initLogger();
+        initLeakCanary();//检测内存溢出
+        initLogger();//初始化日志管理
         AutoLayoutConifg.getInstance().useDeviceSize();
-        initData();//初始化流水号
+        initData();//初始化远程数据库
     }
 
     //初始化数据
     private void initData() {
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+        } catch (ClassNotFoundException e) {
+            Logger.e("连接数据库错误========="+e.toString());
+            e.printStackTrace();
+        }
 
     }
 
