@@ -7,8 +7,6 @@ import soul.listener.com.humiture.base.BaseActivity;
 
 
 /**
- * Created by haidragon on 2017/7/31.
- *
  * @description mvpactivity基类
  */
 

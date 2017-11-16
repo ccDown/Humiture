@@ -6,11 +6,11 @@ package soul.listener.com.humiture.model;
  * @description
  */
 
-public class Log {
-    String id;
-    String userId;
-    String operation;
-    String currentTime;
+public class LogModel extends SqlFactory{
+    private String id;
+    private String userId;
+    private String operation;
+    private String currentTime;
 
     public String getId() {
         return id;
@@ -46,7 +46,7 @@ public class Log {
 
     @Override
     public String toString() {
-        return "Log{" +
+        return "LogModel{" +
                 "id='" + id + '\'' +
                 ", userId='" + userId + '\'' +
                 ", operation='" + operation + '\'' +

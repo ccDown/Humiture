@@ -6,15 +6,15 @@ package soul.listener.com.humiture.model;
  * @description
  */
 
-public class SystemUser {
-    String id;
-    String userId;
-    String userName;
-    String userPassword;
-    String userpPrivaileges;
-    String userType;
-    String userMail;
-    String userTel;
+public class SystemUserModel extends SqlFactory{
+    private String id;
+    private String userId;
+    private String userName;
+    private String userPassword;
+    private String userpPrivaileges;
+    private String userType;
+    private String userMail;
+    private String userTel;
 
     public String getId() {
         return id;
@@ -82,7 +82,7 @@ public class SystemUser {
 
     @Override
     public String toString() {
-        return "SystemUser{" +
+        return "SystemUserModel{" +
                 "id='" + id + '\'' +
                 ", userId='" + userId + '\'' +
                 ", userName='" + userName + '\'' +

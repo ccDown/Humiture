@@ -20,12 +20,6 @@ public class HomeActivity extends BaseMvpActivity<HomePresenter> implements Home
     Button logV;
     @BindView(R.id.log_d)
     Button logD;
-    @BindView(R.id.log_i)
-    Button logI;
-    @BindView(R.id.log_w)
-    Button logW;
-    @BindView(R.id.log_e)
-    Button logE;
 
     @Override
     public HomePresenter createPresenter() {
@@ -51,7 +45,7 @@ public class HomeActivity extends BaseMvpActivity<HomePresenter> implements Home
 
     }
 
-    @OnClick({R.id.log_v, R.id.log_d, R.id.log_i, R.id.log_w, R.id.log_e})
+    @OnClick({R.id.log_v, R.id.log_d})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.log_v:
@@ -60,17 +54,6 @@ public class HomeActivity extends BaseMvpActivity<HomePresenter> implements Home
             case R.id.log_d:
                 mPresenter.toLogD();
 
-                break;
-            case R.id.log_i:
-                mPresenter.toLogI();
-
-                break;
-            case R.id.log_w:
-                mPresenter.toLogW();
-
-                break;
-            case R.id.log_e:
-                mPresenter.toLogE();
                 break;
             default:
                 break;

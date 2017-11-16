@@ -6,14 +6,14 @@ package soul.listener.com.humiture.model;
  * @description
  */
 
-public class Temperature {
-    String id;
-    String residentId;
-    String temperature;
-    String humidity;
-    String currentDate;
-    String currentTime;
-    String temperatureOut;
+public class TemperatureModel extends SqlFactory{
+    private String id;
+    private String residentId;
+    private String temperature;
+    private String humidity;
+    private String currentDate;
+    private String currentTime;
+    private String temperatureOut;
 
     public String getId() {
         return id;
@@ -73,7 +73,7 @@ public class Temperature {
 
     @Override
     public String toString() {
-        return "Temperature{" +
+        return "TemperatureModel{" +
                 "id='" + id + '\'' +
                 ", residentId='" + residentId + '\'' +
                 ", temperature='" + temperature + '\'' +

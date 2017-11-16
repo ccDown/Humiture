@@ -41,7 +41,7 @@ public class AppManager {
      */
     public void addActivity(Activity activity) {
         if (activityStack == null) {
-            activityStack = new Stack<>();
+            activityStack = new Stack<Activity>();
         }
         activityStack.add(activity);
     }
@@ -76,7 +76,7 @@ public class AppManager {
      * 结束指定类名的Activity
      */
     public void finishActivity(Class<?> cls) {
-        Stack<Activity> activitys = new Stack<>();
+        Stack<Activity> activitys = new Stack<Activity>();
         for (Activity activity : activityStack) {
             if (activity.getClass().equals(cls)) {
                 activitys.add(activity);

@@ -6,15 +6,10 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
-import android.view.Window;
 import android.view.WindowManager;
-
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
 
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
-import soul.listener.com.humiture.BuildConfig;
 import soul.listener.com.humiture.R;
 import soul.listener.com.humiture.manager.AppManager;
 import soul.listener.com.humiture.mvp.IBaseView;
@@ -45,8 +40,7 @@ public class BaseActivity extends AppCompatActivity implements IBaseView {
         initView();
         initData();
         initEvent();
-        // 设置状态栏字体的颜色
-        //        setMiuiStatusBarDarkMode(this,true);
+
     }
 
     protected void setView() {
@@ -94,17 +88,13 @@ public class BaseActivity extends AppCompatActivity implements IBaseView {
     @Override
     protected void onResume() {
         super.onResume();
-        if (!BuildConfig.DEBUG) {
-//            MobclickAgent.onResume(this);//友盟
-        }
+
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        if (!BuildConfig.DEBUG) {
-//            MobclickAgent.onPause(this);//友盟
-        }
+
     }
 
     @Override
@@ -127,26 +117,4 @@ public class BaseActivity extends AppCompatActivity implements IBaseView {
         mDialog.dismissDialog();
     }
 
-
-    /**
-     * 改变状态栏字体颜色 支持小米手机或者MIUI内核6.0+版本
-     *
-     * @param activity 本活动
-     * @param darkmode true 改变字体为黑色
-     */
-    public static boolean setMiuiStatusBarDarkMode(Activity activity, boolean darkmode) {
-        Class<? extends Window> clazz = activity.getWindow().getClass();
-        try {
-            int darkModeFlag = 0;
-            Class<?> layoutParams = Class.forName("android.view.MiuiWindowManager$LayoutParams");
-            Field field = layoutParams.getField("EXTRA_FLAG_STATUS_BAR_DARK_MODE");
-            darkModeFlag = field.getInt(layoutParams);
-            Method extraFlagField = clazz.getMethod("setExtraFlags", int.class, int.class);
-            extraFlagField.invoke(activity.getWindow(), darkmode ? darkModeFlag : 0, darkModeFlag);
-            return true;
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return false;
-    }
 }

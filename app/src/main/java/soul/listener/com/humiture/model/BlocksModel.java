@@ -6,12 +6,12 @@ package soul.listener.com.humiture.model;
  * @description
  */
 
-public class Blocks {
-    String blocksId;
-    String blocksName;
-    String blocksLocation;
-    String blocksContact;
-    String blocksContaceTel;
+public class BlocksModel extends SqlFactory{
+    private String blocksId;
+    private String blocksName;
+    private String blocksLocation;
+    private String blocksContact;
+    private String blocksContaceTel;
 
     public String getBlocksId() {
         return blocksId;
@@ -55,7 +55,7 @@ public class Blocks {
 
     @Override
     public String toString() {
-        return "Blocks{" +
+        return "BlocksModel{" +
                 "blocksId='" + blocksId + '\'' +
                 ", blocksName='" + blocksName + '\'' +
                 ", blocksLocation='" + blocksLocation + '\'' +

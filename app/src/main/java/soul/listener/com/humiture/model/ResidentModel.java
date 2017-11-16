@@ -6,17 +6,17 @@ package soul.listener.com.humiture.model;
  * @description
  */
 
-public class Resident {
-    String residenId;
-    String residentName;
-    String blocksId;
-    String buildingNo;
-    String residentUnit;
-    String residentRoomNo;
-    String residentTel1;
-    String residentTel2;
-    String residentTel3;
-    String residentIEEEAddress;
+public class ResidentModel extends SqlFactory{
+    private String residenId;
+    private String residentName;
+    private String blocksId;
+    private String buildingNo;
+    private String residentUnit;
+    private String residentRoomNo;
+    private String residentTel1;
+    private String residentTel2;
+    private String residentTel3;
+    private String residentIEEEAddress;
 
     public String getResidenId() {
         return residenId;
@@ -100,7 +100,7 @@ public class Resident {
 
     @Override
     public String toString() {
-        return "Resident{" +
+        return "ResidentModel{" +
                 "residenId='" + residenId + '\'' +
                 ", residentName='" + residentName + '\'' +
                 ", blocksId='" + blocksId + '\'' +
