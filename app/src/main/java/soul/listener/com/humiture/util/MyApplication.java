@@ -8,6 +8,10 @@ import com.orhanobut.logger.Logger;
 import com.squareup.leakcanary.LeakCanary;
 import com.zhy.autolayout.config.AutoLayoutConifg;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+
 /**
  * @description 获取整个应用的上下文
  */
@@ -16,6 +20,7 @@ public class MyApplication extends Application {
 
     private static final String TAG = "MyApplication";
     private static Context mContext;
+    public static Connection connection;
 
     @Override
     public void onCreate() {
@@ -29,12 +34,21 @@ public class MyApplication extends Application {
 
     //初始化数据
     private void initData() {
-        try {
-            Class.forName("com.mysql.jdbc.Driver");
-        } catch (ClassNotFoundException e) {
-            Logger.e("连接数据库错误========="+e.toString());
-            e.printStackTrace();
-        }
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Class.forName("com.mysql.jdbc.Driver");
+                    connection = DriverManager.getConnection(Constants.SQLITEURL,Constants.SQLITEUSER,Constants.SQLITEPW);
+                } catch (ClassNotFoundException e) {
+                    Logger.e("连接数据库错误========="+e.toString());
+                    e.printStackTrace();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
+
 
     }
 

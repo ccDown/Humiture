@@ -3,9 +3,14 @@ package soul.listener.com.humiture.activity;
 import com.orhanobut.logger.Logger;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 
-import soul.listener.com.humiture.db.SQLOption;
+import soul.listener.com.humiture.db.SQLCursor;
+import soul.listener.com.humiture.model.BlocksModel;
+import soul.listener.com.humiture.model.SqlFactory;
+import soul.listener.com.humiture.model.SystemUserModel;
 import soul.listener.com.humiture.mvp.BasePresenter;
+import soul.listener.com.humiture.util.Constants;
 
 
 /**
@@ -17,27 +22,32 @@ class HomePresenter extends BasePresenter<HomeActivity> {
     }
 
     public void toLogV() {
-        Logger.v("VVVV","asdasd","asdasd");
         try {
-            SQLOption.getConnection();
+            ArrayList<SqlFactory> sqlFactory = SQLCursor.getData(Constants.SYSUSER_TABLE_NO);
+            for (SqlFactory s:sqlFactory) {
+                Logger.e(((SystemUserModel)s).toString());
+            }
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
-    public void toLogD() {
-        Logger.d("DDDD");
+    public void toLogD()  {
+        ArrayList<SqlFactory> sqlFactory = null;
+        try {
+            sqlFactory = SQLCursor.getPartDataBySelection(Constants.BLOCKS_TABLE_NO
+                    ,new String[]{"*"}
+                    ,new String[]{Constants.BLOCK_ID}
+                    ,new String[]{Constants.IS}
+                    ,new String[]{"1"}
+                    ,0,10);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        for (SqlFactory s:sqlFactory) {
+            Logger.e(((BlocksModel)s).toString());
+        }
     }
 
-    public void toLogI() {
-        Logger.i("IIII");
-    }
-
-    public void toLogW() {
-        Logger.w("WWWW");
-    }
-
-    public void toLogE() {
-        Logger.e("EEEE");
-    }
 }
