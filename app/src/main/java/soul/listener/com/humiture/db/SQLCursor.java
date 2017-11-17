@@ -14,6 +14,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
+import soul.listener.com.humiture.base.BaseActivity;
 import soul.listener.com.humiture.model.BlocksModel;
 import soul.listener.com.humiture.model.LogModel;
 import soul.listener.com.humiture.model.PartDataSelectionModel;
@@ -67,7 +68,8 @@ public class SQLCursor {
      * @return resultSet
      * @throws SQLException
      */
-    public static void getData(final int tableNameNo, final SqlInfoCallBack sqlInfoCallBack) throws SQLException {
+    public static void getData(final BaseActivity mView,final int tableNameNo, final SqlInfoCallBack sqlInfoCallBack) throws SQLException {
+        mView.showDialog();
         final ArrayList sqlFactoryList = new ArrayList();
         final Statement[] statement = {null};
         Flowable.just(tableNameNo)
@@ -78,7 +80,7 @@ public class SQLCursor {
                     public ResultSet apply(Integer s) throws Exception {
                         statement[0] = (Statement) getInstance().createStatement();
                         String sqlMessage = "Select * From " + StringUtils.dealTableName(s);
-                        Logger.e("sqlMessage=========="+sqlMessage);
+                        Logger.e("getData   sqlMessage=========="+sqlMessage);
                         return statement[0].executeQuery(sqlMessage);
                     }
                 })
@@ -88,6 +90,8 @@ public class SQLCursor {
                     @Override
                     public void accept(ResultSet resultSet) throws Exception {
                         fillContent(sqlFactoryList, tableNameNo, resultSet, statement[0]);
+
+                        mView.hideDialog();
 
                         if (sqlFactoryList.size()>0) {
                             sqlInfoCallBack.Success(sqlFactoryList);
@@ -129,6 +133,7 @@ public class SQLCursor {
 
                         String tableName = StringUtils.dealTableName(s);
                         String sqlMessage = "Select " + stringBuilder.toString() + " From " + tableName + " limit " + startlimit + " ," + endlimit;
+                        Logger.e("getPartData      sqlMessage=========="+sqlMessage);
                         return statement[0].executeQuery(sqlMessage);
                     }
                 })
@@ -196,7 +201,7 @@ public class SQLCursor {
 
                         stringBuilder.append(" limit " + startlimit + " ," + endlimit);
                         String sqlMessage = stringBuilder.toString();
-                        Logger.e("getPartDataBySelection========" + sqlMessage);
+                        Logger.e("getPartDataBySelection  sqlMessage========" + sqlMessage);
                         return statement[0].executeQuery(sqlMessage);
                     }
                 })
@@ -222,7 +227,8 @@ public class SQLCursor {
      * @param sqlInfoCallBack
      * @throws SQLException
      */
-    public static void getPartDataBySelection(final PartDataSelectionModel model,final SqlInfoCallBack sqlInfoCallBack) throws SQLException {
+    public static void getPartDataBySelection(final BaseActivity mView, final PartDataSelectionModel model, final SqlInfoCallBack sqlInfoCallBack) throws SQLException {
+        mView.showDialog();
         final ArrayList sqlFactoryList = new ArrayList();
         final Statement[] statement = {null};
         Flowable.just(model.getTableNameNo())
@@ -257,7 +263,7 @@ public class SQLCursor {
 
                         stringBuilder.append(" limit " + model.getStartLimit() + " ," + model.getEndLimit());
                         String sqlMessage = stringBuilder.toString();
-                        Logger.e("getPartDataBySelection========" + sqlMessage);
+                        Logger.e("getPartDataBySelection  sqlMessage========" + sqlMessage);
                         return statement[0].executeQuery(sqlMessage);
                     }
                 })
@@ -267,6 +273,7 @@ public class SQLCursor {
                     @Override
                     public void accept(ResultSet resultSet) throws Exception {
                         fillContent(sqlFactoryList, model.getTableNameNo(), resultSet, statement[0]);
+                        mView.hideDialog();
                         if (sqlFactoryList.size()>0){
                             sqlInfoCallBack.Success(sqlFactoryList);
                         }else{
