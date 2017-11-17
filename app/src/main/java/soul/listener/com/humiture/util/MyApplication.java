@@ -44,6 +44,7 @@ public class MyApplication extends Application {
                     Logger.e("连接数据库错误========="+e.toString());
                     e.printStackTrace();
                 } catch (SQLException e) {
+                    Logger.e("数据库错误========="+e.toString());
                     e.printStackTrace();
                 }
             }

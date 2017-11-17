@@ -16,11 +16,14 @@ import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 import soul.listener.com.humiture.model.BlocksModel;
 import soul.listener.com.humiture.model.LogModel;
+import soul.listener.com.humiture.model.PartDataSelectionModel;
 import soul.listener.com.humiture.model.ResidentModel;
 import soul.listener.com.humiture.model.SqlFactory;
+import soul.listener.com.humiture.model.SqlInfoCallBack;
 import soul.listener.com.humiture.model.SystemUserModel;
 import soul.listener.com.humiture.model.TemperatureModel;
 import soul.listener.com.humiture.util.Constants;
+import soul.listener.com.humiture.util.SqlStateCode;
 import soul.listener.com.humiture.util.StringUtils;
 
 import static soul.listener.com.humiture.util.MyApplication.connection;
@@ -50,6 +53,7 @@ public class SQLCursor {
                 }
             }
         }
+        //如果数据库连接关闭则重新连接
         if (connection.isClosed()){
         connection = DriverManager.getConnection(Constants.SQLITEURL, Constants.SQLITEUSER, Constants.SQLITEPW);
         }
@@ -63,7 +67,7 @@ public class SQLCursor {
      * @return resultSet
      * @throws SQLException
      */
-    public static ArrayList getData(final int tableNameNo) throws SQLException {
+    public static void getData(final int tableNameNo, final SqlInfoCallBack sqlInfoCallBack) throws SQLException {
         final ArrayList sqlFactoryList = new ArrayList();
         final Statement[] statement = {null};
         Flowable.just(tableNameNo)
@@ -74,6 +78,7 @@ public class SQLCursor {
                     public ResultSet apply(Integer s) throws Exception {
                         statement[0] = (Statement) getInstance().createStatement();
                         String sqlMessage = "Select * From " + StringUtils.dealTableName(s);
+                        Logger.e("sqlMessage=========="+sqlMessage);
                         return statement[0].executeQuery(sqlMessage);
                     }
                 })
@@ -83,9 +88,14 @@ public class SQLCursor {
                     @Override
                     public void accept(ResultSet resultSet) throws Exception {
                         fillContent(sqlFactoryList, tableNameNo, resultSet, statement[0]);
+
+                        if (sqlFactoryList.size()>0) {
+                            sqlInfoCallBack.Success(sqlFactoryList);
+                        }else{
+                            sqlInfoCallBack.Faild(SqlStateCode.STSTE_NODATA);
+                        }
                     }
                 });
-        return sqlFactoryList;
     }
 
     /**
@@ -98,7 +108,7 @@ public class SQLCursor {
      * @return resultSet
      * @throws SQLException
      */
-    public static ArrayList getPartData(final int tableNameNo, final String[] parts, final int startlimit, final int endlimit) throws SQLException {
+    public static void getPartData(final int tableNameNo, final String[] parts, final int startlimit, final int endlimit,final SqlInfoCallBack sqlInfoCallBack) throws SQLException {
         final ArrayList sqlFactoryList = new ArrayList();
         final Statement[] statement = {null};
         Flowable.just(tableNameNo)
@@ -128,9 +138,13 @@ public class SQLCursor {
                     @Override
                     public void accept(ResultSet resultSet) throws Exception {
                         fillContent(sqlFactoryList, tableNameNo, resultSet, statement[0]);
+                        if (sqlFactoryList.size()>0){
+                            sqlInfoCallBack.Success(sqlFactoryList);
+                        }else{
+                            sqlInfoCallBack.Faild(SqlStateCode.STSTE_NODATA);
+                        }
                     }
                 });
-        return sqlFactoryList;
     }
 
     /**
@@ -146,7 +160,7 @@ public class SQLCursor {
      * @return
      * @throws SQLException
      */
-    public static ArrayList getPartDataBySelection(final int tableNameNo, final String[] parts, final String[] selections, final String[] hazyOrExact, final String[] conditions, final int startlimit, final int endlimit) throws SQLException {
+    public static void getPartDataBySelection(final int tableNameNo, final String[] parts, final String[] selections, final String[] hazyOrExact, final String[] conditions, final int startlimit, final int endlimit,final SqlInfoCallBack sqlInfoCallBack) throws SQLException {
         final ArrayList sqlFactoryList = new ArrayList();
         final Statement[] statement = {null};
         Flowable.just(tableNameNo)
@@ -156,6 +170,8 @@ public class SQLCursor {
                     @Override
                     public ResultSet apply(Integer s) throws Exception {
                         statement[0] = (Statement) getInstance().createStatement();
+
+                        //拼装SQL查询语句
                         StringBuilder stringBuilder = new StringBuilder();
                         for (int i = 0; i < parts.length; i++) {
                             if (i == 0) {
@@ -190,10 +206,74 @@ public class SQLCursor {
                     @Override
                     public void accept(ResultSet resultSet) throws Exception {
                         fillContent(sqlFactoryList, tableNameNo, resultSet, statement[0]);
+                        if (sqlFactoryList.size()>0){
+                            sqlInfoCallBack.Success(sqlFactoryList);
+                        }else{
+                            sqlInfoCallBack.Faild(SqlStateCode.STSTE_NODATA);
+                        }
                     }
                 });
-        return sqlFactoryList;
+    }
 
+
+    /**
+     * 根据条件查询部分数据
+     * @param model
+     * @param sqlInfoCallBack
+     * @throws SQLException
+     */
+    public static void getPartDataBySelection(final PartDataSelectionModel model,final SqlInfoCallBack sqlInfoCallBack) throws SQLException {
+        final ArrayList sqlFactoryList = new ArrayList();
+        final Statement[] statement = {null};
+        Flowable.just(model.getTableNameNo())
+                .subscribeOn(Schedulers.newThread())
+                //在新线程中变换数据并发送
+                .map(new Function<Integer, ResultSet>() {
+                    @Override
+                    public ResultSet apply(Integer s) throws Exception {
+                        statement[0] = (Statement) getInstance().createStatement();
+                        //拼装SQL查询语句
+                        StringBuilder stringBuilder = new StringBuilder();
+                        for (int i = 0; i < model.getParts().length; i++) {
+                            if (i == 0) {
+                                stringBuilder.append(model.getParts()[i]);
+                            } else {
+                                stringBuilder.append("," + model.getParts()[i]);
+                            }
+                        }
+
+                        String tableName = StringUtils.dealTableName(s);
+                        String part = stringBuilder.toString();
+                        stringBuilder = new StringBuilder();
+                        stringBuilder.append("Select " + part + " From " + tableName + " Where ");
+
+                        for (int i = 0; i < model.getSelections().length; i++) {
+                            if (i == 0) {
+                                stringBuilder.append(model.getSelections()[i] + " " + model.getHazyOrExact()[i] + " '" + model.getConditions()[i] + "'");
+                            } else {
+                                stringBuilder.append("and " + model.getSelections()[i] + " " + model.getHazyOrExact()[i] + " '" + model.getConditions()[i] + "'");
+                            }
+                        }
+
+                        stringBuilder.append(" limit " + model.getStartLimit() + " ," + model.getEndLimit());
+                        String sqlMessage = stringBuilder.toString();
+                        Logger.e("getPartDataBySelection========" + sqlMessage);
+                        return statement[0].executeQuery(sqlMessage);
+                    }
+                })
+                //返回主线程
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Consumer<ResultSet>() {
+                    @Override
+                    public void accept(ResultSet resultSet) throws Exception {
+                        fillContent(sqlFactoryList, model.getTableNameNo(), resultSet, statement[0]);
+                        if (sqlFactoryList.size()>0){
+                            sqlInfoCallBack.Success(sqlFactoryList);
+                        }else{
+                            sqlInfoCallBack.Faild(SqlStateCode.STSTE_NODATA);
+                        }
+                    }
+                });
     }
 
     /**
