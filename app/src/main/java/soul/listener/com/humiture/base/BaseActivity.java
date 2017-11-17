@@ -15,6 +15,10 @@ import soul.listener.com.humiture.manager.AppManager;
 import soul.listener.com.humiture.mvp.IBaseView;
 import soul.listener.com.humiture.view.CustomProgressDialog;
 
+/**
+ * @description IBasePresenter
+ * Created by kuan on 2017/7/31.
+ */
 
 public class BaseActivity extends AppCompatActivity implements IBaseView {
     public Activity mActivity;
