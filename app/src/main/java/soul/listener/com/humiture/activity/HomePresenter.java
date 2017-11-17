@@ -27,7 +27,7 @@ class HomePresenter extends BasePresenter<HomeActivity> {
 
     public void toLogV() {
         try {
-            SQLCursor.getData(Constants.SYSUSER_TABLE_NO, new SqlInfoCallBack() {
+            SQLCursor.getData(mView,Constants.SYSUSER_TABLE_NO, new SqlInfoCallBack() {
                 @Override
                 public void Success(ArrayList<SqlFactory> sqlFactories) {
                     for (SqlFactory s : sqlFactories) {
@@ -57,7 +57,7 @@ class HomePresenter extends BasePresenter<HomeActivity> {
             model.setStartLimit(0);
             model.setEndLimit(10);
 
-            SQLCursor.getPartDataBySelection(model, new SqlInfoCallBack() {
+            SQLCursor.getPartDataBySelection(mView,model, new SqlInfoCallBack() {
                         @Override
                         public void Success(ArrayList<SqlFactory> sqlFactories) {
                             for (SqlFactory s : sqlFactories) {
