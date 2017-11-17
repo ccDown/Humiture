@@ -49,7 +49,7 @@ public class Constants {
     public static final String BLOCK_LOACTION = "blocksLocation";
     public static final String BLOCK_CONTACT = "blocksContact";
     public static final String BLOCK_CONTACETEL = "blocksContaceTel";
-
+    //
 
 
 }
